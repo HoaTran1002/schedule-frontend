@@ -5,6 +5,7 @@ import Home from './client/home'
 import Information from './client/information'
 import Task from './client/task'
 import Team from './client/team'
+import Individual from './client/individual'
 
 export const clientPages = [
   {
@@ -22,6 +23,10 @@ export const clientPages = [
   {
     path: '/team',
     element: Team
+  },
+  {
+    path: '/individual',
+    element: Individual
   },
   //admin
   {

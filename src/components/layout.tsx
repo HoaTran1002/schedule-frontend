@@ -6,7 +6,8 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   PartitionOutlined,
-  TeamOutlined
+  TeamOutlined,
+  UserOutlined
 } from '@ant-design/icons'
 import { Button, Layout, Menu, theme } from 'antd'
 import { ReactNode, useState } from 'react'
@@ -43,6 +44,11 @@ const Siderbars: itemSidebar[] = [
     key: '/organizational',
     icon: <PartitionOutlined />,
     label: 'organizational'
+  },
+  {
+    key: '/individual',
+    icon: <UserOutlined />,
+    label: 'Individual'
   }
 ]
 
