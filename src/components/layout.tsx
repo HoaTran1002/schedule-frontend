@@ -103,7 +103,8 @@ const LayoutContent = ({ children }: Props) => {
             top: 0,
             left: collapsed ? 81 : 281,
             width: '100%',
-            transition: '.15s all ease'
+            transition: '.15s all ease',
+            zIndex: 10
           }}
         >
           <Button
@@ -126,7 +127,8 @@ const LayoutContent = ({ children }: Props) => {
             marginLeft: collapsed ? 82 : 282,
             minHeight: '100vh',
             background: colorBgContainer,
-            transition: '.15s all ease'
+            transition: '.15s all ease',
+            zIndex: 1
           }}
         >
           <div style={{ padding: '4px 8px', background: colorBgContainer }}>{children}</div>
