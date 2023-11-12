@@ -43,6 +43,11 @@ const Siderbars: itemSidebar[] = [
     key: '/organizational',
     icon: <PartitionOutlined />,
     label: 'organizational'
+  },
+  {
+    key: '/assign',
+    icon: <PartitionOutlined />,
+    label: 'Assign'
   }
 ]
 
