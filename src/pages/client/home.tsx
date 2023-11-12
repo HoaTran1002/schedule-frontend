@@ -1,93 +1,59 @@
+import { MixedState, sendRequest } from '@/app/features/mixed/mixed.slice'
+import { Plan } from '@/app/features/plan/plan.type'
+import { useAppDispatch, useAppSelector } from '@/app/hooks'
+import CardData from '@/components/client/home/CardData'
 import Layout from '@/components/layout'
-import { Space, Table, Tag } from 'antd'
-import type { ColumnsType } from 'antd/es/table'
-
-interface DataType {
-  key: string
-  name: string
-  age: number
-  address: string
-  tags: string[]
-}
-
-const columns: ColumnsType<DataType> = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text) => <a>{text}</a>
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age'
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address'
-  },
-  {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green'
-          if (tag === 'loser') {
-            color = 'volcano'
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          )
-        })}
-      </>
-    )
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (_, record) => (
-      <Space size='middle'>
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
-      </Space>
-    )
-  }
-]
-
-const data: DataType[] = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer', 'tester', 'value']
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser']
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher']
-  }
-]
+import Loading from '@/components/loading'
+import IPlan from '@/interface/plan'
+import { getNameCompainionUnit, getNameOrganizationalUnit } from '@/utils'
+import { Divider } from 'antd'
+import { useEffect } from 'react'
 const Home = () => {
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    dispatch(sendRequest())
+  }, [dispatch])
+  const currentMixed: MixedState = useAppSelector((state) => {
+    return state.mixed
+  })
+
+  const compainionData = currentMixed.data?.dataCompainonUnit || []
+  const organizationalData = currentMixed.data?.dataOrganizationalUint || []
+  const dataRender: IPlan[] =
+    currentMixed.data?.dataPlan?.map((item: Plan, key: number) => {
+      const data: IPlan = {
+        id: key,
+        content: item.content,
+        companionUnit: getNameCompainionUnit(item.companionUnitId, compainionData),
+        organizationalUnit: getNameOrganizationalUnit(item.organizationalId, organizationalData),
+        execTime: item.timeStart.toString(),
+        request: item.title,
+        progress: 'Done'
+      }
+      return data
+    }) || []
+  console.log(dataRender)
   return (
     <Layout>
-      <Table columns={columns} dataSource={data} />
+      {currentMixed.loading ? (
+        <Loading></Loading>
+      ) : (
+        <>
+          <Divider plain={false} style={{ borderBlock: '0px solid #FFFFFF', color: '#1677ff', fontSize: '24px' }}>
+            KẾ HOẠCH CÔNG TÁC THÁNG 05/2023
+          </Divider>
 
-      <Table columns={columns} dataSource={data} />
+          <Divider orientation='left' style={{ borderBlock: '0px solid #FFFFFF', color: '#1677ff' }}>
+            I. CÔNG TÁC CHÍNH TRỊ TƯ TƯỞNG VÀ XÂY DỰNG VĂN HÓA CÔNG SỞ
+          </Divider>
+          <CardData dataPlan={dataRender} />
+
+          <Divider orientation='left' style={{ borderBlock: '0px solid #FFFFFF', color: '#1677ff' }}>
+            II. CÔNG TÁC TỔ CHỨC - NHÂN SỰ
+          </Divider>
+          <CardData dataPlan={dataRender} />
+        </>
+      )}
     </Layout>
   )
 }
