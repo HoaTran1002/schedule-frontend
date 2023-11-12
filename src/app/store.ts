@@ -4,12 +4,16 @@ import createSagaMiddleware from 'redux-saga'
 import rootSaga from './root.saga'
 import companionUnitSlice from './features/companionUnit/companionUnit.slice'
 import organizationalSlice from './features/organizationUnit/organizationalUnit.slice'
+import planSlice from './features/plan/plan.slice'
+import mixedSlice from './features/mixed/mixed.slice'
 
 const sagaMiddleware = createSagaMiddleware()
 
 export const store = configureStore({
   reducer: {
     auth: authSlice,
+    plan: planSlice,
+    mixed: mixedSlice,
     companionUnit: companionUnitSlice,
     organizational: organizationalSlice
   },

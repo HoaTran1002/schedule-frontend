@@ -1,17 +1,19 @@
-import { ReactNode, useState } from 'react'
+import { logout } from '@/app/features/auth/auth.slice'
+import { useAppDispatch } from '@/app/hooks'
 import {
-  TeamOutlined,
-  UserOutlined,
+  AuditOutlined,
   HomeOutlined,
-  CarryOutOutlined,
   MenuFoldOutlined,
-  MenuUnfoldOutlined
+  MenuUnfoldOutlined,
+  PartitionOutlined,
+  TeamOutlined
 } from '@ant-design/icons'
-import { Layout, Menu, Button, theme } from 'antd'
+import { Button, Layout, Menu, theme } from 'antd'
+import { ReactNode, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 interface Props {
-  content: ReactNode
+  children: ReactNode
 }
 
 type itemSidebar = {
@@ -26,27 +28,34 @@ const Siderbars: itemSidebar[] = [
     icon: <HomeOutlined />,
     label: 'Home'
   },
+
   {
-    key: '/information',
-    icon: <UserOutlined />,
-    label: 'Information'
-  },
-  {
-    key: '/task',
-    icon: <CarryOutOutlined />,
-    label: 'Task'
-  },
-  {
-    key: '/team',
+    key: '/companionUnit',
     icon: <TeamOutlined />,
-    label: 'Team'
+    label: 'companionUnit'
+  },
+  {
+    key: '/plan',
+    icon: <AuditOutlined />,
+    label: 'Plan'
+  },
+  {
+    key: '/organizational',
+    icon: <PartitionOutlined />,
+    label: 'organizational'
+  },
+  {
+    key: '/assign',
+    icon: <PartitionOutlined />,
+    label: 'Assign'
   }
 ]
 
-const LayoutClient = ({ content }: Props) => {
+const LayoutContent = ({ children }: Props) => {
   const navigate = useNavigate()
   const { Header, Content, Sider } = Layout
   const [collapsed, setCollapsed] = useState(false)
+  const dispatch = useAppDispatch()
   const {
     token: { colorBgContainer }
   } = theme.useToken()
@@ -84,6 +93,9 @@ const LayoutClient = ({ content }: Props) => {
             navigate(e.key)
           }}
         />
+        <Button danger style={{ marginLeft: 20 }} onClick={() => dispatch(logout())}>
+          logout
+        </Button>
       </Sider>
       <Layout>
         <Header
@@ -96,7 +108,8 @@ const LayoutClient = ({ content }: Props) => {
             top: 0,
             left: collapsed ? 81 : 281,
             width: '100%',
-            transition: '.15s all ease'
+            transition: '.15s all ease',
+            zIndex: 10
           }}
         >
           <Button
@@ -119,14 +132,15 @@ const LayoutClient = ({ content }: Props) => {
             marginLeft: collapsed ? 82 : 282,
             minHeight: '100vh',
             background: colorBgContainer,
-            transition: '.15s all ease'
+            transition: '.15s all ease',
+            zIndex: 1
           }}
         >
-          <div style={{ padding: '4px 8px', background: colorBgContainer }}>{content}</div>
+          <div style={{ padding: '4px 8px', background: colorBgContainer }}>{children}</div>
         </Content>
       </Layout>
     </Layout>
   )
 }
 
-export default LayoutClient
+export default LayoutContent

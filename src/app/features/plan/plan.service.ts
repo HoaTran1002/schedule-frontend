@@ -3,6 +3,7 @@ import { Plan, PlanCreate, Work, WorkCreate } from './plan.type'
 
 export const getAllPlan = async () => {
   const { data } = await API.get<ResponseAPI<Plan[]>>('/api/plan')
+
   return data.element
 }
 
